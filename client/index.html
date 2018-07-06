@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>chatterbox</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+
+  <!-- dependencies -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/jquery-timeago/jquery.timeago.js"></script>
+  <script src="bower_components/underscore/underscore.js"></script>
+  <script>
+    if (!/(&|\?)username=/.test(window.location.search)) {
+      var newSearch = window.location.search;
+      if (newSearch !== '' & newSearch !== '?') {
+        newSearch += '&';
+      }
+      newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+      window.location.search = newSearch;
+    }
+  </script>
+  <script src="env/config.js"></script>
+  <script src="scripts/app.js"></script>
+</head>
+
+<body>
+  <div id="banner">
+    <h1>chatterbox</h1>
+    <div id="username"></div>
+  </div>
+  <div id="main">
+    <div id="sidebar">
+      <div class="subheader">What's on your mind?</div>
+      <form action="#" id="send" method="post">
+        <input type="text" id="message" autofocus/>
+        <input type="submit" />
+      </form>
+      <hr>
+      <div id="rooms">
+        <div>
+          <span class="header">Chatrooms</span>
+          <span class="roomname" value="newRoom">(add room)</span>
+        </div>
+        <div id="allRooms" class="roomname default">View all</div>
+        <div>
+          <div class="subheader">New messages</div>
+          <div id="activeRooms"></div>
+        </div>
+        <div>
+          <div class="subheader">Old messages</div>
+          <div id="inactiveRooms"></div>
+        </div>
+      </div>
+      <hr>
+      <div hidden>
+        <div class="header">Your friends</div>
+        <div id="friendsList">
+        </div>
+      </div>
+    </div>
+    <div id="chats"></div>
+  </div>
+</body>
+
+</html>
