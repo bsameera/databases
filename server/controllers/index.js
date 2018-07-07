@@ -3,9 +3,9 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.messages.get((results) => 
-        res.send(results) 
-      );
+      models.messages.get((results) => {
+        res.send({ results: results });
+      });
     },
     post: function (req, res) {
       var message = req.body;
