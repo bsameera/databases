@@ -8,21 +8,14 @@ CREATE TABLE users (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE rooms (
-  id INTEGER NOT NULL AUTO_INCREMENT,
-  name VARCHAR(16),
-  PRIMARY KEY (id)
-);
-
 CREATE TABLE messages (
   id INTEGER NOT NULL AUTO_INCREMENT,
-  user INTEGER,
-  room INTEGER,
+  user_id INTEGER,
+  room_name VARCHAR(16),
   content TEXT,
   created_at TIMESTAMP,
-  FOREIGN KEY(user) REFERENCES users(id),
-  FOREIGN KEY(room) REFERENCES rooms(id),
-  PRIMARY KEY (id)
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  PRIMARY KEY(id)
 );
 
 /*  Execute this file from the command line by typing:

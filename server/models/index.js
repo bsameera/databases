@@ -1,13 +1,10 @@
 var db = require('../db');
 
 var dbQuery = function(queryString, callback) {
-  db.connect();  
   db.query(queryString, null, (err, results) => {
-    debugger;
     if (err) {
       callback(err);
     } else {
-      db.end();
       callback(results);
     }
   });
@@ -20,9 +17,12 @@ module.exports = {
       dbQuery(queryString, callback);
     },
     post: function (message, callback) {
-      var queryString = `INSERT INTO messages (user, room, content)
-      VALUES ('${message.username}', '${message.roomname}', '${message.content}')`;
-      dbQuery(queryString, callback);
+      var userQuery = `SELECT id FROM users WHERE users.name = "${message.username}"`;
+      dbQuery(userQuery, (results) => {
+        var messageQuery = `INSERT INTO messages (user_id, room_name, content) 
+          VALUES (${results[0].id}, "${message.roomname}", "${message.content}")`;
+        dbQuery(messageQuery, callback); 
+      });
     } 
   },
 
