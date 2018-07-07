@@ -13,16 +13,16 @@ var dbQuery = function(queryString, callback) {
 module.exports = {
   messages: {
     get: function (callback) {
-      var queryString = 'SELECT room_name, content FROM messages';
-      // var queryString = `SELECT users.name AS username, room_name,
-        // content, created_at FROM messages INNER JOIN users ON users.id = ${messages.user_id}`;
+      var queryString = `SELECT users.name AS username, room_name AS roomname,
+        content AS text, created_at AS createdAt
+        FROM messages INNER JOIN users ON users.id = messages.user_id`;
       dbQuery(queryString, callback);
     },
     post: function (message, callback) {
       var userQuery = `SELECT id FROM users WHERE users.name = "${message.username}"`;
       dbQuery(userQuery, (results) => {
         var messageQuery = `INSERT INTO messages (user_id, room_name, content) 
-          VALUES (${results[0].id}, "${message.roomname}", "${message.content}")`;
+          VALUES (${results[0].id}, "${message.roomname}", "${message.text}")`;
         dbQuery(messageQuery, callback); 
       });
     } 
