@@ -13,7 +13,9 @@ var dbQuery = function(queryString, callback) {
 module.exports = {
   messages: {
     get: function (callback) {
-      var queryString = 'SELECT * FROM messages';
+      var queryString = 'SELECT room_name, content FROM messages';
+      // var queryString = `SELECT users.name AS username, room_name,
+        // content, created_at FROM messages INNER JOIN users ON users.id = ${messages.user_id}`;
       dbQuery(queryString, callback);
     },
     post: function (message, callback) {
