@@ -1,6 +1,6 @@
 let app = {};
 
-app.server = 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages';
+app.server = '/classes/messages';
 app.defaultRoom = 'View all';
 
 app.init = function() {
@@ -116,6 +116,8 @@ app.renderRooms = function() {
   for (let room in this.rooms) {
     this.renderRoom(room);
   }
+  this.hideRoomTypeIfNecessary(this.$activeRooms);
+  this.hideRoomTypeIfNecessary(this.$inactiveRooms);
 };
 
 app.renderRoom = function(roomname) {
@@ -133,6 +135,7 @@ app.changeRoom = function(event) {
   let selected = event.target.getAttribute('value');
   if (selected === 'newRoom') {
     let roomname = prompt('Type in a room name:').trim() || this.defaultRoom;
+    !this.rooms[roomname] && (this.rooms[roomname] = { count: 0 });
     this.renderRoom(roomname);
     this.setRoom(roomname);
   } else {
@@ -161,23 +164,22 @@ app.setRoom = function(roomname) {
 
 app.activateRoom = function(roomname) {
   if (!this.rooms[roomname].$node.hasClass('active')) {
-    this.rooms[roomname].$node.addClass('active');  
-    this.moveRoom(this.rooms[roomname].$node, this.$activeRooms, this.$inactiveRooms);
-  }
+    this.rooms[roomname].$node.addClass('active');
+  } 
+  this.moveRoom(this.rooms[roomname].$node, this.$activeRooms, this.$inactiveRooms);
 };
 
 app.deactivateRoom = function(roomname) {
   if (this.rooms[roomname].$node.hasClass('active')) {
-    this.rooms[roomname].$node.removeClass('active');  
-    this.moveRoom(this.rooms[roomname].$node, this.$inactiveRooms, this.$activeRooms);
+    this.rooms[roomname].$node.removeClass('active');
   }
+  this.moveRoom(this.rooms[roomname].$node, this.$inactiveRooms, this.$activeRooms);
 };
 
 app.moveRoom = function($roomNode, $destination, $source) {
   $roomNode.remove();
   $roomNode.prependTo($destination);
   $destination.parent().show();
-  this.hideRoomTypeIfNecessary($source);
 };
 
 app.hideRoomTypeIfNecessary = function(roomType) {
